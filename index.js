@@ -3,17 +3,31 @@ import 'dotenv/config'
 import express from 'express';
 import Database from 'better-sqlite3';
 import migration from './migration.js';
+import cors from 'cors';
+
+function runMigration() {
+    migration().then(() => {
+        setTimeout(() => {
+            runMigration();
+        }, 
+        // 1 minute
+        60000);
+    })
+}
+
+runMigration();
 
 
 
-
-
-migration();
 
 const db = new Database('algowiki.db', {});
 db.pragma('journal_mode = WAL');
 
 const app = express();
+
+app.use(cors({
+    origin: '*'
+}));
 
 app.get('/', (req, res) => {
     // search by domain, problem, variation or algorithm name case insensitive
