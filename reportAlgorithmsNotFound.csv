@@ -1,0 +1,279 @@
+family;variation;algorithm
+Maximum Flow;;Ford & Fulkerson
+Maximum Flow;;Dinitz
+Maximum Flow;;Edmonds & Karp
+Maximum Flow;;Karzanov
+Maximum Flow;;Galil & Naamad
+Linear Programming;;Fourier–Motzkin elimination
+Linear Programming;;Khachiyan Ellipsoid algorithm 
+Convex Hull;2-dimensional;Brute Force
+Convex Hull;2-dimensional;Jarvis
+Sequence Alignment;Edit sequence, global alignment;Needleman–Wunsch algorithm
+Sequence Alignment;Edit sequence, local alignment;Smith–Waterman algorithm
+Sequence Alignment;Edit distance;Masek; Patterson
+Sequence Alignment;Edit sequence;Hirschberg's algorithm
+Sequence Alignment;Edit sequence, local alignment;FASTA
+Sequence Alignment;Edit sequence, local alignment;Gotoh
+Sequence Alignment;Edit sequence, local alignment;Altschul and Erickson
+Sequence Alignment;Edit sequence, local alignment;Myers and Miller
+Sequence Alignment;Edit sequence, global alignment;David Sankoff
+Nearest Neighbor Search;Nearest Neighbor Search (NNS);Linear search
+Nearest Neighbor Search;Nearest Neighbor Search (NNS);k-d Tree
+Nearest Neighbor Search;Nearest Neighbor Search (NNS);R-tree
+Graph Coloring;O(n^{3/14}) coloring a 3-colorable graph;Karger, Blum
+Maximum Cardinality Matching;;Micali and Vazirani
+The Traveling-Salesman Problem;Geometric Maximum TSP;Barvinok
+Maximum Flow;;Dantzig
+Maximum Flow;;Dinitz (with dynamic trees)
+Maximum Flow;;Cherkassky
+Maximum Flow;;Sleator & Tarjan
+Maximum Flow;;Goldberg & Tarjan
+Maximum Flow;;Ahuja & Orlin
+Linear System;Positive Definite Matrix;Conjugate Gradient
+Linear Programming;;Karmarkar's algorithm
+Linear Programming;;Simplex Algorithm
+Linear Programming;;Terlaky's Criss-cross algorithm
+Linear Programming;;Affine scaling
+Linear Programming;;Cohen; Lee and Song
+Linear Programming;;Lee and Sidford
+Convex Hull;2-dimensional;Graham
+Convex Hull;2-dimensional;W. Eddy Quickhull
+Convex Hull;2-dimensional; 3-dimensional;Preparata and Hong
+Convex Hull;2-dimensional; 3-dimensional;Preparata and Hong
+Convex Hull;2-dimensional;Andrew's algorithm
+Convex Hull;2-dimensional;The ultimate planar convex hull algorithm
+Convex Hull;2-dimensional; 3-dimensional;Chan's algorithm
+Convex Hull;2-dimensional; 3-dimensional;Chan's algorithm
+Convex Hull;2-dimensional;Miller; Stout
+Sequence Alignment;Edit sequence, global alignment;FOGSAA
+Line Clipping;convex and non-convex polyhedral window;Skala
+Shown Surface Determination;;Painter's algorithm/Newell's algorithm
+Shown Surface Determination;;Warnock's algorithm
+Shown Surface Determination;;Ray tracing
+Shown Surface Determination;;Binary space partitioning (BSP)
+Shown Surface Determination;;Z-buffering
+Shown Surface Determination;;S-buffer/Scanline Rendering
+Integer Relation;Integer Relation;HJLS algorithm
+The Traveling-Salesman Problem;;Johnson; D. S.; McGeoch; L. A.
+The Traveling-Salesman Problem;; Gutina; Gregory; Yeob; Anders; Zverovich; Alexey
+Maximum Flow;;Ahuja et al.
+Convex Hull;;Incremental convex hull algorithm; Michael Kallay
+Mutual Exclusion;2-thread Mutual Exclusion;Dekker's algorithm
+SDD Systems Solvers;;Briggs; Henson; McCormick
+Convex Optimization (Non-linear);ILP;MILPs;Gomory's cutting method
+Convex Optimization (Non-linear);ILP;MILPs;Gomory's cutting method
+Convex Optimization (Non-linear);General, Constrained optimization;Wolfe; Lemaréchal; Kiwiel
+Convex Optimization (Non-linear);General, Constrained optimization;Ellipsoid method
+Convex Optimization (Non-linear);General, Constrained optimization;Subgradient method
+Convex Optimization (Non-linear);Stochastic optimization;Dual subgradients and the drift-plus-penalty method
+Root Computation;Root Computation with continuous second derivative;Halley's method
+Cardinality Estimation;streaming;Min/max sketches streaming algorithm
+Cardinality Estimation;streaming;Bottom-m sketches streaming algorithm
+Register Allocation;;Cooper and Dasgupta algorithm
+Graph Edit Distance Computation;;Alberto Sanfeliu and King-Sun Fu
+Graph Edit Distance Computation;;Wang Y-K; Fan K-C; Horng J-T
+Graph Edit Distance Computation;;Tao D; Tang X; Li X et al
+Delaunay Triangulation;General Delaunay Triangulation (d-dimensions);Dwyer (higher dimensions)
+Factorization of Polynomials Over Finite Fields;Distinct-degree; Equal-degree;Berlekamp's algorithm
+Factorization of Polynomials Over Finite Fields;Distinct-degree; Equal-degree;Berlekamp's algorithm
+Factorization of Polynomials Over Finite Fields;Square-free;Square-free factorization
+Factorization of Polynomials Over Finite Fields;Distinct-degree;Distinct-degree factorization
+Factorization of Polynomials Over Finite Fields;Equal-degree;Cantor–Zassenhaus algorithm
+Factorization of Polynomials Over Finite Fields;Equal-degree;Victor Shoup's algorithm
+Stable Matching Problem;Arc Consistency?;Hentenryck et. al.
+Graph Isomorphism Problem;Isomorphism of strongly regular graphs;Spielman
+Graph Isomorphism Problem;;McKay
+Graph Isomorphism Problem;;Schmidt & Druffel
+Graph Isomorphism Problem;Subgraph Isomorphism;Ullman
+Graph Isomorphism Problem;;Babai
+Graph Isomorphism Problem;Circulant graphs;Muzychuk
+Graph Isomorphism Problem;Partial k-trees;Bodlaender
+Graph Isomorphism Problem;Hypergraphs isomorphism;Babai & Codenotti
+Maximum Likelihood Methods in Unknown Latent Variables;Maximum Likelihood Methods in Unknown Latent Variables; multi-view model, discrete observations;Shaban; Amirreza; Mehrdad; Farajtabar
+Maximum Likelihood Methods in Unknown Latent Variables;Maximum Likelihood Methods in Unknown Latent Variables, Hidden Markov Models;alpha-HMM (Matsuyama, Yasuo)
+The Set-Covering Problem;;Greedy Algorithm
+The Set-Covering Problem;;Lund & Yannakakis
+The Set-Covering Problem;;Feige
+The Set-Covering Problem;;Raz & Safra
+The Set-Covering Problem;;Dinur & Steurer
+The Set-Covering Problem;;Cardoso; Nuno; Abreu; Rui
+The Set-Covering Problem;;Brute force
+Maximum Cut;Maximum Cut, Approximate;Motwani & Raghavan
+Maximum Cut;Maximum Cut, Approximate;Mitzenmacher & Upfal
+Maximum Cut;Maximum Cut, Approximate;Khuller; Raghavachari & Young, "Greedy Methods"
+Maximum Cut;Maximum Cut, Approximate;Ausiello et al.
+Maximum Cut;Maximum Cut, Approximate;Dunning; Gupta & Silberholz
+Integer Relation;Integer Relation;Ferguson–Forcade algorithm
+Integer Relation;Integer Relation;LLL algorithm
+Integer Relation;Integer Relation;PSOS algorithm
+Integer Relation;Integer Relation;PSLQ algorithm
+Logarithm Calculations;Discrete Logarithm Over Finite Fields, F_q;Index calculus algorithm
+Integral Equations;;Naive Implementation
+One-Way Hash Functions;;Whirlpool
+One-Way Hash Functions;Optional Key?;BLAKE2
+Graph Diameter;Arbitrary edge weights, Dense graph;Dense APSP algorithm
+Graph Diameter;Arbitrary edge weights, Sparse graph;Sparse APSP algorithm
+Graph Diameter;Unweighted;Binary representation search with matrix multiplication
+Graph Diameter;Bounded integer weights;Cygan, Gabow, Sankowski
+Online Matrix Vector Multiplication (OMV);;Williams
+Online Matrix Vector Multiplication (OMV);;Larsen, Williams (Theorem 1.1)
+Online Matrix Vector Multiplication (OMV);;Larsen, Williams (follows from Theorem 2.1)
+Negative Triangle;;
+Sorting - Comparison;;Parallel Merge Sort - Cole (1)
+Sorting - Comparison;;Parallel Merge Sort - Cole (2)
+Maximum Flow;;MKM Algorithm
+Maximum Flow;;Galil
+Maximum Flow;;Shiloach
+Maximum Flow;;Gabow
+Maximum Flow;;Lee, Sidford
+Maximum Flow;;Madry
+Maximum Flow;;Kathuria, Liu, Sidford
+Maximum Flow;;Kathuria, Liu, Sidford
+Maximum Flow;;Brand et al
+Maximum Flow;;Gao, Liu, Peng
+Maximum Flow;;Chen et al
+Matrix Multiplication;;Method of Four Russians
+Matrix Multiplication;;Alman, Vassilevska Williams
+5 - Graph Coloring;;Byskov
+5 - Graph Coloring;;Bjorklund, Husfeldt, Theorem 1
+5 - Graph Coloring;;Bjorklund, Husfeldt, Proposition 2
+5 - Graph Coloring;;Zamir
+6 - Graph Coloring;;Byskov, Theorem 14
+6 - Graph Coloring;;Byskov, Theorem 20
+6 - Graph Coloring;;Bjorklund, Husfeldt, Theorem 1
+6 - Graph Coloring;;Bjorklund, Husfeldt, Proposition 2
+6 - Graph Coloring;;Zamir
+Chromatic Number;;Christofides
+Chromatic Number;;Lawler
+Chromatic Number;;Eppstein
+Chromatic Number;;Byskov
+Chromatic Number;;Bjorklund, Husfeldt, Theorem 1
+Chromatic Number;;Bjorklund, Husfeldt, Proposition 2
+Chromatic Number;;Koivisto
+#2 - Graph Coloring;;BFS/DFS for connected components
+#3 - Graph Coloring;;Angelsmark, Jonsson
+#3 - Graph Coloring;;Fürer, Kasiviswanathan
+#3 - Graph Coloring;;Fomin; Gaspers & Saurabh
+#4 - Graph Coloring;;Fomin; Gaspers & Saurabh
+Chromatic Polynomial;;Zykov (deletion-contraction)
+Chromatic Polynomial;;Bjorklund, Husfeldt, Proposition 3
+Chromatic Polynomial;;Koivisto
+Linear system of equations;General;LU decomposition
+Linear system of equations;General;Matrix inverse
+Linear system of equations;Toeplitz;Asymptotically fast Toeplitz algorithms
+Linear System;Toeplitz;Brent, Gustavson, and Yun, Anti-Diagonal Toeplitz (ADT)
+Linear System;Toeplitz;Brent, Gustavson, and Yun, Main-Diagonal Toeplitz (MDT)
+Linear System;Toeplitz;Bitmead and Anderson
+Linear System;Toeplitz;Morf
+Linear System;Toeplitz;de Hoog
+Linear System;Toeplitz;Ammar and Gragg
+Linear System;Toeplitz;Trench-Zohar
+Linear System;Toeplitz;A Look-ahead Levinson Algorithm
+Linear System;Toeplitz;Generalized Levinson Algorithm for any Rank Profile
+Linear System;Toeplitz??;Berlekamp-Massey Algorithm
+Linear System;Toeplitz;Extended Berlekamp-Massey
+Linear System;Toeplitz;Pivoted Toeplitz algorithms
+Linear System;Toeplitz?, Hermitian?;Schur Algorithms for Hermitian, Toeplitz, and Hankel matrices
+Linear System;Toeplitz;Lookahead Bareiss Algorithm
+Linear system of equations;Sparse;
+Linear Programming;;Vaidya
+Linear Programming;;Vaidya
+Linear Programming;;Jiang, Song, Weinstein and Zhang
+Closest Pair Problem;k-dimensional space, Euclidean metric;Khuller, Matias
+Shortest Path (Undirected graphs);positive integer weights; assumes constant-time multiplication;Thorup
+Shortest Path (Undirected graphs);positive integer weights; assumes constant-time multiplication;Thorup
+Betweenness Centrality (BC);Unweighted;Brandes
+Betweenness Centrality (BC);Weighted;Brandes
+All-Pairs Shortest Paths (APSP);Directed, Weighted (Arbitrary weights);Johnson's algorithm
+All-Pairs Shortest Paths (APSP);Directed, Unweighted;Zwick 2002
+Boolean Satisfiability;NAE 3SAT;Shi 2009
+String Search;;Wu and Manber, Fuzzy String Matching
+Sequence Alignment;Edit distance;Wagner-Fischer algorithm
+Sequence Alignment;Edit sequence;Wagner-Fischer algorithm
+Sequence Alignment;Edit sequence;Masek, Paterson
+Maximum cardinality matching;bipartite graph;Alt, Blum, Mehlhorn, Paul
+Maximum cardinality matching;general graph;Blossom Algorithm
+Maximum cardinality matching;general graph;Micali, Vazirani
+Maximum-weight matching;bipartite (i.e. assignment), general;Edmonds-Karp
+Maximum-weight matching;bipartite (i.e. assignment), general;Johnson (Edmonds-Karp-based)
+Maximum-weight matching;bipartite (i.e. assignment), general;Fredman-Tarjan (Edmonds-Karp-based)
+Maximum-weight matching;general;Gabow
+Maximum-weight matching;general;Galil, Micali, Gabow
+Maximum-weight matching;general;Gabow, Galil, Spencer
+Maximum-weight matching;general;Gabow
+Root Computation;Root Computation with continuous derivatives (up to d);Householder's Method
+Lowest Common Ancestor;Lowest Common Ancestor with Linking and Cutting;Sleator and Tarjan [Linking and Cutting]
+3SUM;Integer 3SUM;Textbook Sort-and-Binary-Search
+3SUM;Integer 3SUM;Textbook Sort-and-Two-Sided-Traversal
+3SUM;Integer 3SUM;Baran, Demaine, Patrascu
+3SUM;Integer 3SUM;Baran, Demaine, Patrascu
+3SUM;Integer 3SUM;Baran, Demaine, Patrascu
+3SUM;Integer 3SUM;Baran, Demaine, Patrascu
+Maximum subarray problem;1-dimensional;Wen
+Maximum subarray problem;2-dimensional;brute force
+Maximum subarray problem;2-dimensional;Bentley
+Maximum subarray problem;2-dimensional;Smith
+Maximum subarray problem;2-dimensional;Tamaki, Tokuyama (exact)
+Maximum subarray problem;2-dimensional;Tamaki, Tokuyama (approximate)
+Maximum subarray problem;2-dimensional;Takaoka
+Maximum subarray problem;2-dimensional;Smith
+Maximum subarray problem;2-dimensional;KALYAN PERUMALLA and NARSINGH DEO
+Maximum subarray problem;2-dimensional;Wen
+k-Clique Problem;k-Clique;Brute force enumeration
+k-Clique Problem;k-Clique;Nesetril, Poljak
+Min-Weight k-Clique Problem;3-Clique;APSP algorithm
+Exact-Weight k-Clique Problem;3-Clique;Gronlund, Pettie
+Graph Isomorphism Problem;Graph Isomporhism, Trivalent Graphs;Babai 1980
+Nash Equilibria;2 player games;Lemke-Howson Algorithm
+Nash Equilibria;Graphical games, Multi-agent influence diagrams;Blum, Shelton, Koller
+Nash Equilibria;2 player games;Lipton, Markakis and Mehta method
+Nash Equilibria;n player games;Lipton, Markakis and Mehta method 2
+Nash Equilibria;n player games;Support enumeration and search
+Nash Equilibria;n player games;Mixed Integer Programming
+Nash Equilibria;n player games;Global Newton Method
+Line Clipping;convex and non-convex polyhedral window;Skala
+Integer Relation;;Bailey, Broadhurst
+String Search;;Galil, Seiferas
+String Search;;Galil, Seiferas
+Graph Isomorphism Problem;Subgraph Isomorphism;Ullman
+Sorting ;Comparison Sorting;Parallel Merge Sort - Cole (2)
+Sorting;Comparison sorting, Non-Comparison sorting;Parallel Sorting by OverPartitioning (PSOP) - Li, Sevcik (Radix sort / PROP)
+Linear System;symmetric positive semidefinite matrices;Pan, Reif
+Linear System;;Csanky
+Closest Pair Problem;2-dimensional space, Eucledian metric;MacKenzie, Stout
+LU Decomposition;;Lüpke
+String Search;;Kim, Kang
+String Search;;Kim, Kim, Kang
+String Search;;Raju, Babu, Raju, Madhavi
+String Search;;Qu, Zhang, Fang, Liu (parallelized Aho-Corasick algorithm)
+String Search;;Alsaheel, Alqahtani, Alabdulatif
+String Search;;Rasool, Khare (parallel KMP)
+Sequence Alignment;;ZHANG, QIAO, LIU
+SDD Systems Solver;Exact Laplacian Solver;Blelloch et al.
+Nearest Neighbor Search;;Ramasubramanian, Paliwal
+Nearest Neighbor Search;;Papadopoulos, Manolopoulos
+Nearest Neighbor Search;;Papadopoulos, Manolopoulos
+Nearest Neighbor Search;;KNN-MR (map reduce) - Kim, Kim, Shim
+Lowest Common Ancestor;Single-Pair LCA;Das, Halverson, Min
+The Traveling-Salesman Problem;;Burkhovetskiy, Steinberg
+The Traveling-Salesman Problem;;Pekny, Miller
+The Traveling-Salesman Problem;;Pruul, Nemhauser, Rushmeier
+The Traveling-Salesman Problem;;Quinn, Deo 
+Delaunay Triangulation;2-Dimensional Delaunay Triangulation, Spherical Delaunay Triangulation;Jacobsen et al.
+CFG Problems;;Parallel Earley's method
+Data Compression;;CZ algorithm - Jiancheng, Yiqin, Yu
+Data Compression;;Crochemore, Rytter
+Data Compression;;You, Xi, Zhang, Chen
+Data Compression;;Dua, Kumar, Singh
+Data Compression;;Mishra, Mishra, Pani
+Determinants;Determinant of Matrices with Integer Entries;Csanky
+Determinants;Determinant of Matrices with Integer Entries;Preparata, Sarwate
+Determinants;Determinant of Matrices with Integer Entries;Borodin, von zur Gathem, Hopcroft
+Determinants;Determinant of Matrices with Integer Entries;Bini
+Determinants;Determinant of Matrices with Integer Entries;Pan
+Determinants;Determinant of Matrices with Integer Entries;Galil, Pan
+Determinants;Determinant of Matrices with Integer Entries;Mahajan, Vinay
+Determinants;Determinant of Matrices with Integer Entries;Beliakov, Matiyasevich
+Determinants;Determinant of Matrices with Integer Entries;Pereira, de Morais, Matsumoto
+Integral Equations;Volterra-Abel Equations;Capobianco, Cardone
+Interval Scheduling;Preemptive Scheduling on Many Machines, Minimize C_max;Martel
