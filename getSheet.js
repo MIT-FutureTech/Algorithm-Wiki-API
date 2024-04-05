@@ -4,7 +4,6 @@ import { google } from 'googleapis'
 const SPREAD_SHEET_ID = process.env.SPREAD_SHEET_ID
 const GOOGLE_CREDENTIALS = process.env.GOOGLE_CREDENTIALS || ''
 
-console.log(process.env.GOOGLE_CREDENTIALS)
 // auth from json file
 const auth = new google.auth.GoogleAuth({
     credentials: JSON.parse(GOOGLE_CREDENTIALS),

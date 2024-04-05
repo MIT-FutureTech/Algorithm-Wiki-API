@@ -742,10 +742,6 @@ export default async function () {
     `).run();
         db.prepare(`INSERT INTO metaInformation (datetime) VALUES (datetime('now'))`).run();
         console.log(`Database created at ${db.prepare(`SELECT datetime FROM metaInformation`).get().datetime}`)
-        console.log(`Problems: ${db.prepare(`SELECT COUNT(*) FROM problems`).get()['COUNT(*)']}`)
-        console.log(`Algorithms: ${db.prepare(`SELECT COUNT(*) FROM algorithms`).get()['COUNT(*)']}`)
-        console.log(`Reductions: ${db.prepare(`SELECT COUNT(*) FROM reductions`).get()['COUNT(*)']}`)
-
     }
 
     populateProblems()

@@ -32,7 +32,6 @@ export default function (db) {
         });
 
         // Send the result as JSON
-        console.log(result);
         res.header('Content-Type', 'application/json');
         res.json(result);
     });

@@ -54,7 +54,6 @@ export default function (db) {
 
         // Send the result as JSON
         res.header('Content-Type', 'application/json');
-        console.log(result)
 
         res.json(result);
     });
@@ -91,7 +90,6 @@ export default function (db) {
                     AND p.familySlug = $familySlug`
                     
 
-            console.log(sql)
 
             const variations = db.prepare(sql).all({
                 domainSlug: result.domainSlug,

@@ -118,7 +118,6 @@ export default function (db) {
                     ${result.parentId ? `AND p.id != ${result.parentId}` : ''}
                         `;
 
-            console.log(sql)
 
             const variations = db.prepare(sql).all({
                 domainSlug: result.domainSlug,
