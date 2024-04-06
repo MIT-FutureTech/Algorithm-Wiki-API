@@ -5,17 +5,17 @@ import Database from 'better-sqlite3';
 import migration from './migration.js';
 import cors from 'cors';
 
-// function runMigration() {
-//     migration().then(() => {
-//         setTimeout(() => {
-//             runMigration();
-//         }, 
-//         // 1 minute
-//         60000);
-//     })
-// }
+function runMigration() {
+    migration().then(() => {
+        setTimeout(() => {
+            runMigration();
+        }, 
+        // 1 minute
+        60000);
+    })
+}
 
-// runMigration();
+runMigration();
 
 
 
