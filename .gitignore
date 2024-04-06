@@ -1,5 +1,4 @@
 .env
 node_modules/
-algowiki.db
-algowiki.db-shm
-algowiki.db-wal
+./algowiki.db
+./algowiki.db-shm
