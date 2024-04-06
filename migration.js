@@ -27,6 +27,10 @@ export default async function () {
             familySlug TEXT NOT NULL,
             variationSlug TEXT NOT NULL,
             description TEXT,
+            problemProperties TEXT,
+            shortDescription TEXT,
+            familyProperties TEXT,
+            familyDescription TEXT,
             alias TEXT,
             aliasSlug TEXT,
             parentId INTEGER,
@@ -128,6 +132,7 @@ export default async function () {
         preserves TEXT,
         notes TEXT,
         reductionId TEXT,
+        description TEXT,
         FOREIGN KEY (fromProblemId) REFERENCES problems(id),
         FOREIGN KEY (toProblemId) REFERENCES problems(id)
     )
@@ -139,7 +144,7 @@ export default async function () {
         targetProblemId INTEGER NOT NULL,
         name TEXT,
         alias TEXT,
-        hypothesisID TEXT,
+        hypothesisId TEXT,
         description TEXT,
         time TEXT,
         space TEXT,
@@ -177,7 +182,8 @@ export default async function () {
         newEntriesToSheet1,
         parallelAlgos,
         assumptionsHypotheses,
-        reductionsSheet
+        reductionsSheet,
+        problemFamilies
     ] = await Promise.all([
         getSheet('Problems'),
         getSheet('Sheet1'),
@@ -185,6 +191,7 @@ export default async function () {
         getSheet('Parallel Algos'),
         getSheet('Assumptions/Hypotheses'),
         getSheet('Reductions'),
+        getSheet('Problem Families')
     ])
 
     function readJson(path) {
@@ -204,19 +211,27 @@ export default async function () {
 
     async function populateProblems() {
         const problems = JSON.parse(JSON.stringify(problemsSheet));
-
+        const families = JSON.parse(JSON.stringify(problemFamilies));
 
         for (const problem of problems) {
             problem.family = problem.familyName;
 
             if (!problem.family) continue;
 
-
             problem.description = problem.problemDescription;
-
+            problem.shortDescription = problem.abridgedProblemDescription;
             problem.domainSlug = slugfy(problem.domain);
             problem.familySlug = slugfy(problem.family);
             problem.variationSlug = slugfy(problem.variation);
+
+            const family = families.find(f => problem.familySlug === slugfy(f.familyName));
+            if (family) {
+                problem.familyProperties = family.familyProperties;
+                problem.familyDescription = family.familyDescription;
+            } else {
+                problem.familyProperties = '';
+                problem.familyDescription = '';
+            }
 
             problem.aliasSlug = problem.alias.split(';').map(alias =>
                 slugfy(alias.trim())
@@ -242,7 +257,11 @@ export default async function () {
                 bestKnownUpperBound,
                 upperBoundReference,
                 bestKnownLowerBound,
-                lowerBoundReference
+                lowerBoundReference,
+                problemProperties,
+                shortDescription,
+                familyProperties,
+                familyDescription
             ) VALUES (
                 $domain,
                 $family,
@@ -261,7 +280,11 @@ export default async function () {
                 $bestKnownUpperBound,
                 $upperBoundReference,
                 $bestKnownLowerBound,
-                $lowerBoundReference
+                $lowerBoundReference,
+                $problemProperties,
+                $shortDescription,
+                $familyProperties,
+                $familyDescription
             )
         `).run(problem);
         }
@@ -652,7 +675,8 @@ export default async function () {
                     year,
                     preserves,
                     notes,
-                    reductionId
+                    reductionId,
+                    description
                 ) VALUES (
                     $fromProblemId,
                     $toProblemId,
@@ -670,7 +694,8 @@ export default async function () {
                     $year,
                     $preserves,
                     $notes,
-                    $reductionId
+                    $reductionId,
+                    $description
                 )
             `).run(reduction);
             }
@@ -682,6 +707,71 @@ export default async function () {
 
 
     }
+
+    function populateHypotheses() {
+        const hypotheses = JSON.parse(JSON.stringify(assumptionsHypotheses));
+        for (const hypothesis of hypotheses) {
+            hypothesis.targetProblemId = db.prepare(`SELECT id FROM problems WHERE variationSlug = $variation OR 
+            (
+                aliasSlug LIKE $variation1
+                OR aliasSlug LIKE $variation2
+                OR aliasSlug LIKE $variation3
+                OR aliasSlug LIKE $variation
+            ) LIMIT 1`).get({
+                variation: slugfy(hypothesis.target),
+                variation1: `${slugfy(hypothesis.target)};%`,
+                variation2: `%;${slugfy(hypothesis.target)};%`,
+                variation3: `%;${slugfy(hypothesis.target)}`,
+            })?.id;
+
+            if (!hypothesis.targetProblemId) {
+                console.log('Problem not found', hypothesis.target);
+                continue;
+            }
+            
+            db.prepare(`
+            INSERT INTO hypothesis (
+                targetProblemId,
+                name,
+                alias,
+                hypothesisId,
+                description,
+                time,
+                space,
+                computationModel,
+                constants,
+                implies,
+                impliedBy,
+                proven,
+                impliesReferences,
+                impliedByReferences,
+                reference,
+                year,
+                notes
+            ) VALUES (
+                $targetProblemId,
+                $name,
+                $alias,
+                $hypothesisId,
+                $description,
+                $time,
+                $space,
+                $computationModel,
+                $constants,
+                $implies,
+                $impliedBy,
+                $proven,
+                $impliesReferences,
+                $impliedByReferences,
+                $reference,
+                $year,
+                $notes
+            )
+        `).run(hypothesis);
+        }
+    }
+
+
 
     function createFTSVirtualTableForSearch() {
         // drop it if exists
@@ -749,6 +839,7 @@ export default async function () {
     fillEmptyDomains()
     fillParentProblem()
     populateAlgorithms()
+    populateHypotheses()
     populateCountings()
     createMetaInformation()
     createFTSVirtualTableForSearch()

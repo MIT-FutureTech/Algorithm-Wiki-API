@@ -15,6 +15,9 @@ export default function (db) {
                 p.familySlug,
                 p.variation, 
                 p.variationSlug,
+                p.problemProperties,
+                p.shortDescription,
+
                 p.parentId,
                 COUNT(a.problemId) AS algorithms
             FROM 
@@ -96,8 +99,43 @@ export default function (db) {
                 familySlug: result.familySlug,
             });
             result.related = variations;
+
+            // get reductions
+            sql = `
+                SELECT 
+                    r.*,
+                    p.domainSlug as fromDomainSlug,
+                    p.domain as fromDomain,
+                    p.familySlug as fromFamilySlug,
+                    p.family as fromFamily,
+                    p.variation as fromVariation,
+                    p.variationSlug as fromVariationSlug,
+                    p2.domainSlug as toDomainSlug,
+                    p2.domain as toDomain,
+                    p2.familySlug as toFamilySlug,
+                    p2.family as toFamily,
+                    p2.variation as toVariation,
+                    p2.variationSlug as toVariationSlug
+                FROM 
+                    reductions r
+                JOIN
+                    problems p ON p.id = r.fromProblemId
+                JOIN
+                    problems p2 ON p2.id = r.toProblemId
+                WHERE
+                    p.id = $problemId
+                    OR p2.id = $problemId
+            `;
+
+            const reductions = db.prepare(sql).all({
+                problemId: result.id
+            });
+
+            result.reductions = reductions;
            
         }
+
+        
 
 
         res.header('Content-Type', 'application/json');

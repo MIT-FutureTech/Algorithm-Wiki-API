@@ -8,7 +8,7 @@ export default function (db) {
 
         let sqlBase = `
             SELECT 
-                *,
+                r.*,
                 p.domainSlug as fromDomainSlug,
                 p.domain as fromDomain,
                 p.familySlug as fromFamilySlug,
