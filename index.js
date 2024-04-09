@@ -5,23 +5,16 @@ import Database from 'better-sqlite3';
 import migration from './migration.js';
 import cors from 'cors';
 
-let db = new Database('algowiki.db', {
-    verbose: console.log
+const db = new Database('algowiki.db', {
 });
 db.pragma('journal_mode = WAL');
 
 function runMigration() {
-    migration().then(() => {
+    migration(db).then(() => {
         setTimeout(() => {
             runMigration();
         }, 
-        // 1 minute
         60000);
-        // reconnect to db
-        db = new Database('algowiki.db', {
-            verbose: console.log
-        });
-        db.pragma('journal_mode = WAL');
     })
 }
 
@@ -118,6 +111,16 @@ app.get('/stats', (req, res) => {
     const result2 = db.prepare(sql2).get();
     res.header('type', 'application/json');
     res.json({ ...result, ...result2 });
+
+});
+
+app.get('/glossary', (req, res) => {
+    const sql = `
+    SELECT * from glossary
+    `;
+    const result = db.prepare(sql).all();
+    res.header('type', 'application/json');
+    res.json(result);
 
 });
 

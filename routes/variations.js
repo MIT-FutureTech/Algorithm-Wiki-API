@@ -16,6 +16,7 @@ export default function (db) {
                 p.variation, 
                 p.variationSlug,
                 p.problemProperties,
+                p.familyProperties,
                 p.shortDescription,
 
                 p.parentId,

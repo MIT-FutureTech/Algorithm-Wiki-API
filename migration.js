@@ -14,9 +14,34 @@ const algorithmColumnsKeys = {
     "# of Proc Encoding": "numberOfProcessorsEncoding",
 }
 
-export default async function () {
-    const db = new Database('algowiki-temp.db', {});
-    db.pragma('journal_mode = WAL');
+export default async function (db) {
+    // const db = new Database('algowiki-temp.db', {});
+    // db.pragma('journal_mode = WAL');
+
+    const [
+        problemsSheet,
+        sheet1,
+        newEntriesToSheet1,
+        parallelAlgos,
+        assumptionsHypotheses,
+        reductionsSheet,
+        problemFamilies,
+        glossary,
+        domainSheet,
+    ] = await Promise.all([
+        getSheet('Problems'),
+        getSheet('Sheet1'),
+        getSheet('New Entries to Sheet 1'),
+        getSheet('Parallel Algos'),
+        getSheet('Assumptions/Hypotheses'),
+        getSheet('Reductions'),
+        getSheet('Problem Families'),
+        getSheet('Glossary'),
+        getSheet('Domains'),
+    ])
+
+function createTables(){
+    // problems table
     db.prepare(`
         CREATE TABLE IF NOT EXISTS problems (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -31,6 +56,7 @@ export default async function () {
             shortDescription TEXT,
             familyProperties TEXT,
             familyDescription TEXT,
+            domainDescription TEXT,
             alias TEXT,
             aliasSlug TEXT,
             parentId INTEGER,
@@ -49,7 +75,7 @@ export default async function () {
             FOREIGN KEY (parentId) REFERENCES problems(id)
         )
     `).run();
-
+    // algorithms table
     db.prepare(`
     CREATE TABLE IF NOT EXISTS algorithms (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -111,7 +137,7 @@ export default async function () {
         FOREIGN KEY (problemId) REFERENCES problems(id)
     )
 `).run();
-
+    // reductions table
     db.prepare(`
     CREATE TABLE IF NOT EXISTS reductions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -137,7 +163,7 @@ export default async function () {
         FOREIGN KEY (toProblemId) REFERENCES problems(id)
     )
 `).run();
-
+    // hypothesis table
     db.prepare(`
     CREATE TABLE IF NOT EXISTS hypothesis (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -160,6 +186,18 @@ export default async function () {
         notes TEXT
     )
 `).run();
+    // glossary table
+    db.prepare(`
+    CREATE TABLE IF NOT EXISTS glossary (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        term TEXT,
+        definition TEXT,
+        category TEXT
+    )
+`).run();
+}
+
+
     function slugfy(text) {
         if (!text) return ''
         // slugify a string to be used as an id, string can contain special caracteres and spaces. only allow a-z, 0-9 and - and ' 
@@ -167,51 +205,12 @@ export default async function () {
 
     }
 
-    function toCamelCase(text) {
-        if (!text) return '';
-        return text
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, '-') // Replace any sequence of non-alphanumeric characters with a single hyphen
-            .replace(/-+(.)/g, (match, group1) => group1.toUpperCase()) // Convert first letter after each hyphen to uppercase and remove the hyphen
-            .replace(/^-|-$/g, ''); // Remove leading and trailing hyphens
-    }
 
-    const [
-        problemsSheet,
-        sheet1,
-        newEntriesToSheet1,
-        parallelAlgos,
-        assumptionsHypotheses,
-        reductionsSheet,
-        problemFamilies
-    ] = await Promise.all([
-        getSheet('Problems'),
-        getSheet('Sheet1'),
-        getSheet('New Entries to Sheet 1'),
-        getSheet('Parallel Algos'),
-        getSheet('Assumptions/Hypotheses'),
-        getSheet('Reductions'),
-        getSheet('Problem Families')
-    ])
-
-    function readJson(path) {
-        const data = JSON.parse(fs.readFileSync(path, 'utf8'));
-        // all keys to camelCase
-        return data.map((item) => {
-            const newItem = {};
-            for (const key in item) {
-                if (Object.keys(algorithmColumnsKeys).includes(key))
-                    newItem[algorithmColumnsKeys[key]] = item[key];
-                else
-                    newItem[toCamelCase(key)] = item[key];
-            }
-            return newItem;
-        });
-    }
 
     async function populateProblems() {
         const problems = JSON.parse(JSON.stringify(problemsSheet));
         const families = JSON.parse(JSON.stringify(problemFamilies));
+        const domains = JSON.parse(JSON.stringify(domainSheet));
 
         for (const problem of problems) {
             problem.family = problem.familyName;
@@ -223,6 +222,13 @@ export default async function () {
             problem.domainSlug = slugfy(problem.domain);
             problem.familySlug = slugfy(problem.family);
             problem.variationSlug = slugfy(problem.variation);
+
+            const domain = domains.find(d => problem.domainSlug === slugfy(d.domainName));
+            if (domain) {
+                problem.domainDescription = domain.domainDescription;
+            } else {
+                problem.domainDescription = '';
+            }
 
             const family = families.find(f => problem.familySlug === slugfy(f.familyName));
             if (family) {
@@ -261,7 +267,8 @@ export default async function () {
                 problemProperties,
                 shortDescription,
                 familyProperties,
-                familyDescription
+                familyDescription,
+                domainDescription
             ) VALUES (
                 $domain,
                 $family,
@@ -284,7 +291,8 @@ export default async function () {
                 $problemProperties,
                 $shortDescription,
                 $familyProperties,
-                $familyDescription
+                $familyDescription,
+                $domainDescription
             )
         `).run(problem);
         }
@@ -296,11 +304,10 @@ export default async function () {
         const problems = db.prepare(`SELECT * FROM problems WHERE domain = '' OR domain is NULL`).all();
         // try to find the domain from other problem with the same family
         for (const problem of problems) {
-            const domain = db.prepare(`SELECT domain FROM problems WHERE family = $family AND domain != '' LIMIT 1`).get(problem);
+            const domain = db.prepare(`SELECT domain, domainDescription FROM problems WHERE family = $family AND domain != '' AND domain IS NOT NULL LIMIT 1`).get(problem);
             if (domain && domain.domain) {
-
-                db.prepare(`UPDATE problems SET domain = $domain, domainSlug = $domainSlug
-                 WHERE id = $id`).run({ ...problem, domain: domain.domain, domainSlug: slugfy(domain.domain) });
+                db.prepare(`UPDATE problems SET domain = $domain, domainSlug = $domainSlug, domainDescription = $domainDescription WHERE id = $id`
+                ).run({ ...problem, domain: domain.domain, domainSlug: slugfy(domain.domain), domainDescription: domain.domainDescription });
             } else {
                 db.prepare(`UPDATE problems SET domain = $domain, domainSlug = $domainSlug WHERE id = $id`).run({ ...problem, domain: 'Others', domainSlug: slugfy('Others') });
             }
@@ -609,6 +616,20 @@ export default async function () {
                 fromVariation2: `%;${slugfy(reduction.fromVariation)};%`,
                 fromVariation3: `%;${slugfy(reduction.fromVariation)}`,
             })?.id;
+
+
+            // if not found create a new problem with the family and variation
+            if (!reduction.fromProblemId) {
+                reduction.fromProblemId = db.prepare(`
+                INSERT INTO problems (family, variation, familySlug, variationSlug) VALUES ($family, $variation, $familySlug, $variationSlug)
+            `).run({
+                    family: reduction.fromProblem,
+                    variation: reduction.fromVariation,
+                    familySlug: slugfy(reduction.fromProblem),
+                    variationSlug: slugfy(reduction.fromVariation)
+                }).lastInsertRowid;
+            }
+
             reduction.toProblemId = db.prepare(`SELECT id FROM problems WHERE variationSlug = $toVariation OR 
             (
                 aliasSlug LIKE $toVariation1 
@@ -621,26 +642,6 @@ export default async function () {
                 toVariation2: `%;${slugfy(reduction.toVariation)};%`,
                 toVariation3: `%;${slugfy(reduction.toVariation)}`,
             })?.id;
-            // if (!reduction.fromProblemId || !reduction.toProblemId) {
-            //     if (reduction.fromProblemId) notFound.push({ from: reduction.fromVariation, to: reduction.toVariation, missing: 'to' });
-            //     else if (reduction.toProblemId) notFound.push({ from: reduction.fromVariation, to: reduction.toVariation, missing: 'from' });
-            //     else notFound.push({ from: reduction.fromVariation, to: reduction.toVariation, missing: 'both' });
-
-
-
-            //     continue
-            // }
-            // if not found create a new problem with the family and variation
-            if (!reduction.fromProblemId) {
-                reduction.fromProblemId = db.prepare(`
-                INSERT INTO problems (family, variation, familySlug, variationSlug) VALUES ($family, $variation, $familySlug, $variationSlug)
-            `).run({
-                    family: reduction.fromProblem,
-                    variation: reduction.fromVariation,
-                    familySlug: slugfy(reduction.fromProblem),
-                    variationSlug: slugfy(reduction.fromVariation)
-                }).lastInsertRowid;
-            }
             if (!reduction.toProblemId) {
                 reduction.toProblemId = db.prepare(`
                 INSERT INTO problems (family, variation, familySlug, variationSlug) VALUES ($family, $variation, $familySlug, $variationSlug)
@@ -725,10 +726,9 @@ export default async function () {
             })?.id;
 
             if (!hypothesis.targetProblemId) {
-                console.log('Problem not found', hypothesis.target);
                 continue;
             }
-            
+
             db.prepare(`
             INSERT INTO hypothesis (
                 targetProblemId,
@@ -771,7 +771,22 @@ export default async function () {
         }
     }
 
-
+    function populateGlossary() {
+        const glossaryData = JSON.parse(JSON.stringify(glossary));
+        for (const glossary of glossaryData) {
+            db.prepare(`
+            INSERT INTO glossary (
+                term,
+                definition,
+                category
+            ) VALUES (
+                $term,
+                $definition,
+                $category
+            )
+        `).run(glossary);
+        }
+    }
 
     function createFTSVirtualTableForSearch() {
         // drop it if exists
@@ -834,22 +849,47 @@ export default async function () {
         console.log(`Database created at ${db.prepare(`SELECT datetime FROM metaInformation`).get().datetime}`)
     }
 
-    populateProblems()
-    populateReductions()
-    fillEmptyDomains()
-    fillParentProblem()
-    populateAlgorithms()
-    populateHypotheses()
-    populateCountings()
-    createMetaInformation()
-    createFTSVirtualTableForSearch()
+
+    function dropAllTables(){
 
 
-    // rename the temp database to the final name
-    fs.renameSync('algowiki-temp.db', 'algowiki.db');
-    if (fs.existsSync(`algowiki-temp.db-shm`)) fs.renameSync('algowiki-temp.db-shm', 'algowiki.db-shm');
-    if (fs.existsSync(`algowiki-temp.db-wal`)) fs.renameSync('algowiki-temp.db-wal', 'algowiki.db-wal');
-    db.close();
+        db.prepare(`DROP TABLE IF EXISTS algorithms`).run();
+        db.prepare(`DROP TABLE IF EXISTS reductions`).run();
+        db.prepare(`DROP TABLE IF EXISTS hypothesis`).run();
+        db.prepare(`DROP TABLE IF EXISTS glossary`).run();
+        db.prepare(`DROP TABLE IF EXISTS metaInformation`).run();
+        db.prepare(`DROP TABLE IF EXISTS search_fts`).run();
+        db.prepare(`DROP TABLE IF EXISTS search_fts_data`).run();
+        db.prepare(`DROP TABLE IF EXISTS search_fts_idx`).run();
+        db.prepare(`DROP TABLE IF EXISTS search_fts_config`).run();
+        db.prepare(`DROP TABLE IF EXISTS search_fts_docsize`).run();
+        db.prepare(`DROP TABLE IF EXISTS search_fts_content`).run();
+        db.prepare(`DROP TABLE IF EXISTS problems`).run();
+        db.prepare(`DELETE FROM sqlite_sequence`).run();
+
+
+    }
+    db.transaction(() => {
+        dropAllTables()
+        createTables()
+        populateProblems()
+        populateReductions()
+        fillEmptyDomains()
+        fillParentProblem()
+        populateAlgorithms()
+        populateHypotheses()
+        populateCountings()
+        populateGlossary()
+        createMetaInformation()
+        createFTSVirtualTableForSearch()
+    })();
+
+
+    // // rename the temp database to the final name
+    // fs.renameSync('algowiki-temp.db', 'algowiki.db');
+    // if (fs.existsSync(`algowiki-temp.db-shm`)) fs.renameSync('algowiki-temp.db-shm', 'algowiki.db-shm');
+    // if (fs.existsSync(`algowiki-temp.db-wal`)) fs.renameSync('algowiki-temp.db-wal', 'algowiki.db-wal');
+    // db.close();
 
 
 }
