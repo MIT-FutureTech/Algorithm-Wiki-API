@@ -5,6 +5,11 @@ import Database from 'better-sqlite3';
 import migration from './migration.js';
 import cors from 'cors';
 
+let db = new Database('algowiki.db', {
+    verbose: console.log
+});
+db.pragma('journal_mode = WAL');
+
 function runMigration() {
     migration().then(() => {
         setTimeout(() => {
@@ -12,6 +17,11 @@ function runMigration() {
         }, 
         // 1 minute
         60000);
+        // reconnect to db
+        db = new Database('algowiki.db', {
+            verbose: console.log
+        });
+        db.pragma('journal_mode = WAL');
     })
 }
 
@@ -20,8 +30,7 @@ runMigration();
 
 
 
-const db = new Database('algowiki.db', {});
-db.pragma('journal_mode = WAL');
+
 
 const app = express();
 
@@ -35,8 +44,8 @@ app.get('/', (req, res) => {
     const limit = req.query.limit || 10;
     const offset = req.query.offset || 0;
 
-    if(!search) {
-     res.header('type', 'application/json');
+    if (!search) {
+        res.header('type', 'application/json');
         res.json({});
         return;
     }
@@ -60,32 +69,32 @@ app.get('/', (req, res) => {
         const family = curr.family;
         const variation = curr.variation;
         const algorithm = curr.algorithm;
-        
-        if(algorithm) {
-            if(!acc["algorithms"]) acc["algorithms"] = [];
+
+        if (algorithm) {
+            if (!acc["algorithms"]) acc["algorithms"] = [];
             acc["algorithms"].push(curr);
             return acc;
         }
-        
-        if(variation) {
-            if(!acc["variations"]) acc["variations"] = [];
+
+        if (variation) {
+            if (!acc["variations"]) acc["variations"] = [];
             acc["variations"].push(curr);
             return acc;
         }
-        
-        if(family) {
-            if(!acc["families"]) acc["families"] = [];
+
+        if (family) {
+            if (!acc["families"]) acc["families"] = [];
             acc["families"].push(curr);
             return acc;
         }
-        
-        if(domain) {
-            if(!acc["domains"]) acc["domains"] = [];
+
+        if (domain) {
+            if (!acc["domains"]) acc["domains"] = [];
             acc["domains"].push(curr);
             return acc;
         }
-        
-        if(!acc["others"]) acc["others"] = [];
+
+        if (!acc["others"]) acc["others"] = [];
         acc["others"].push(curr);
     }, {});
 
@@ -108,9 +117,19 @@ app.get('/stats', (req, res) => {
     const result = db.prepare(sql).get();
     const result2 = db.prepare(sql2).get();
     res.header('type', 'application/json');
-    res.json({...result, ...result2});
-    
-} );
+    res.json({ ...result, ...result2 });
+
+});
+
+app.get('/health', (req, res) => {
+    const lastUpdated = db.prepare('SELECT * from metaInformation').get().datetime;
+
+    res.header('type', 'application/json');
+    res.json({
+        status: 'ok',
+        lastUpdated: lastUpdated
+    });
+});
 
 import domains from './routes/domains.js';
 import families from './routes/families.js';
