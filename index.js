@@ -10,7 +10,7 @@ const db = new Database('algowiki.db', {
 db.pragma('journal_mode = WAL');
 
 function runMigration() {
-    migration(db).then(() => {
+    migration(db).finally(() => {
         setTimeout(() => {
             runMigration();
         }, 
