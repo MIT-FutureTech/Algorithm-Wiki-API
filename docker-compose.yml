@@ -7,4 +7,6 @@ services:
     ports:
       - "3001:3001"
     volumes:
-      - .:/ALGORITHMWIKIAPI
+      - .:/AlgorithmWikiAPI
+    env_file:
+      - .env
