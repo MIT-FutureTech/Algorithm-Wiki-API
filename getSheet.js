@@ -22,6 +22,8 @@ const algorithmColumnsKeys = {
   "Approximation Factor (if approximate algorithm)": "approximationFactor",
   "# of\nProcessors": "numberOfProcessors",
   "# of Proc Encoding": "numberOfProcessorsEncoding",
+  "Looked at?": "reviewed",
+  "Looked at? (0 - no, 0.001 - briefly but seems to have issues, 1 - partially, 2 - [mostly] yes)": "reviewed"
 };
 
 export default async function getSheet(sheetName) {
