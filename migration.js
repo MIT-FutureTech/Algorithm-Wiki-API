@@ -134,6 +134,7 @@ function createTables(){
         title TEXT, 
         authors TEXT, 
         notes TEXT,
+        reviewed TEXT,
         FOREIGN KEY (problemId) REFERENCES problems(id)
     )
 `).run();
@@ -437,7 +438,8 @@ function createTables(){
                     problemStatement: '',
                     title: '',
                     authors: '',
-                    notes: ''
+                    notes: '',
+                    reviewed: ''
                 }
 
                 const algorithmData = {
@@ -503,7 +505,8 @@ function createTables(){
                     problemStatement,
                     title,
                     authors,
-                    notes
+                    notes,
+                    reviewed
                 ) VALUES (
                     $name,
                     $problemId,
@@ -559,7 +562,8 @@ function createTables(){
                     $problemStatement,
                     $title,
                     $authors,
-                    $notes
+                    $notes,
+                    $reviewed
                 )
             `).run(algorithmData);
             }
