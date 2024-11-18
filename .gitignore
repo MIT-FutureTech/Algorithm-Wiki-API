@@ -3,3 +3,4 @@ node_modules/
 algowiki.db
 algowiki.db-shm
 algowiki.db-wal
+.DS_Store
